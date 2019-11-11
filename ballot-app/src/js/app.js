@@ -12,8 +12,13 @@ App = {
 
       for (i = 0; i < data.length; i ++) {
         proposalTemplate.find('.panel-title').text(data[i].name);
+        proposalTemplate.find('.panel-link').attr('href', data[i].link);
         proposalTemplate.find('img').attr('src', data[i].picture);
-        proposalTemplate.find('.btn-vote').attr('data-id', data[i].id);
+        proposalTemplate.find('img').attr('title', data[i].tooltip);
+        proposalTemplate.find('.btn-vote-for').attr('data-id', data[i].for_id);
+        proposalTemplate.find('.btn-vote-against').attr('data-id', data[i].against_id);
+        proposalTemplate.find('.btn-donate').attr('data-id', data[i].donate_id);
+        proposalTemplate.find('.donate-amt').attr('data-id', data[i].donate_amt_id);
 
         proposalsRow.append(proposalTemplate.html());
         App.names.push(data[i].name);
@@ -54,6 +59,8 @@ App = {
 
   bindEvents: function() {
     $(document).on('click', '.btn-vote-for', App.handleVote);
+    $(document).on('click', '.btn-vote-against', App.handleVoteAgainst);
+    $(document).on('click', '.btn-donate', App.handleDonate);
     $(document).on('click', '#win-count', App.handleWinner);
     $(document).on('click', '#register', function(){ var ad = $('#enter_address').val(); App.handleRegister(ad); });
     $(document).on('click', '#change_state_btn', function(){ var newState = $('#enter_state_opt').val(); App.handleChangeState(newState);});
@@ -87,6 +94,7 @@ App = {
   },
 
   handleRegister: function(addr){
+    alert(addr);
     var voteInstance;
     App.contracts.vote.deployed().then(function(instance) {
       voteInstance = instance;
@@ -100,7 +108,7 @@ App = {
             alert(addr + " registration not done successfully due to revert")
         } else {
             alert(addr + " registration failed")
-        }   
+        }
     });
 },
 
@@ -113,44 +121,116 @@ App = {
     }).then(function(result, err){
         if(result){
             // if(parseInt(result.receipt.status) == 1)
-            alert(newState + " registration done successfully")
-            console.log(result + " registration done successfully")
+            alert("state changed")
+            console.log("state change successfull")
             // if(newState == 2){
             //   $("#register").prop( "disabled", true);
             // }
             // else
             // alert(addr + " registration not done successfully due to revert")
         } else {
-            alert(newState + " registration failed")
-            alert(err + " registration failed")
+            // alert(newState + " registration failed")
+            alert("state change unsuccessfull")
+            // alert(err + " registration failed")
         }   
     });
 },
 
   handleVote: function(event) {
     event.preventDefault();
+    var addr = $('#enter_address').val();
+    // alert(addr);
     var proposalId = parseInt($(event.target).data('id'));
+    // alert(proposalId);
     var voteInstance;
 
     web3.eth.getAccounts(function(error, accounts) {
-      var account = accounts[0];
-      alert(account + " voting failed")
+      // var account = accounts[0];
+      var account = addr;
+      // alert(account + " voting failed")
       App.contracts.vote.deployed().then(function(instance) {
         voteInstance = instance;
 
         // return voteInstance.vote(proposalId, {from: account});
-        return voteInstance.vote(0, 0);
+        return voteInstance.vote(proposalId, 0);
         // return voteInstance.changeState(4);
         // return voteInstance.registerVoter(account, 0, 30, 0);
       }).then(function(result, err){
             if(result){
                 console.log(result.receipt.status);
                 if(parseInt(result.receipt.status) == 1)
-                alert(account + " voting done successfully")
+                alert(account + " voting successfull")
                 else
-                alert(account + " voting not done successfully due to revert")
+                alert(account + " voting unsuccessfull due to revert")
             } else {
                 alert(account + " voting failed")
+            }
+        });
+    });
+  },
+
+  handleVoteAgainst: function(event) {
+    event.preventDefault();
+    var addr = $('#enter_address').val();
+    // alert(addr);
+    var proposalId = parseInt($(event.target).data('id'));
+    // alert(proposalId);
+    var voteInstance;
+    proposalId = proposalId % 4;
+    web3.eth.getAccounts(function(error, accounts) {
+      // var account = accounts[0];
+      var account = addr;
+      // alert(account + " voting failed")
+      App.contracts.vote.deployed().then(function(instance) {
+        voteInstance = instance;
+
+        // return voteInstance.vote(proposalId, {from: account});
+        return voteInstance.vote(proposalId, 1);
+        // return voteInstance.changeState(4);
+        // return voteInstance.registerVoter(account, 0, 30, 0);
+      }).then(function(result, err){
+            if(result){
+                console.log(result.receipt.status);
+                if(parseInt(result.receipt.status) == 1)
+                alert(account + " vote against done successfully")
+                else
+                alert(account + " vote against unsuccessfull due to revert")
+            } else {
+                alert(account + " vote against failed")
+            }
+        });
+    });
+  },
+
+  handleDonate: function(event) {
+    event.preventDefault();
+    var addr = $('#enter_address').val();
+    // alert(addr);
+    var proposalId = parseInt($(event.target).data('id'));
+    // alert(proposalId);
+    var amount = $(".donate-amt[data-id=" + (proposalId+4) +"]").val();
+    // console.log(amount);
+    var voteInstance;
+    proposalId = proposalId % 4;
+    web3.eth.getAccounts(function(error, accounts) {
+
+      var account = addr;
+      App.contracts.vote.deployed().then(function(instance) {
+        voteInstance = instance;
+
+        // return voteInstance.vote(proposalId, {from: account});
+        return voteInstance.donate(proposalId, amount);
+        // return voteInstance.changeState(4);
+        // return voteInstance.registerVoter(account, 0, 30, 0);
+      }).then(function(result, err){
+            if(result){
+                console.log(result.receipt.status);
+                if(parseInt(result.receipt.status) == 1)
+                alert(account + " donation successfull")
+                else
+                alert(account + " donation unsuccessfull due to revert")
+            } else {
+                alert(account + " donation failed")
             }
         });
     });

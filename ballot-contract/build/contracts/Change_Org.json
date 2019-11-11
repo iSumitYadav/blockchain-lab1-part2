@@ -14423,12 +14423,12 @@
     "5777": {
       "events": {},
       "links": {},
-      "address": "0x77b4E3c842B66F8d435FAD7fA29492939a7E756F",
-      "transactionHash": "0x4805b7d45028cecd6288b6a95e1b75f5af8dd65d88562de1b3fef9603c6a240c"
+      "address": "0x60A80593aA0dE8F37B864E81090A7eDB86Be3A01",
+      "transactionHash": "0x10879446e4ba37ef4872809cfb90d1ee3b5ac562bc3f3f5d479c6c9ba8bddce0"
     }
   },
   "schemaVersion": "3.0.16",
-  "updatedAt": "2019-10-28T20:57:36.445Z",
+  "updatedAt": "2019-11-11T01:15:35.350Z",
   "devdoc": {
     "methods": {}
   },
