@@ -1,40 +1,48 @@
 [
   {
+    "petition_id": 1,
     "for_id": 0,
     "against_id": 4,
     "donate_id": 8,
     "donate_amt_id": 12,
     "name": "Cimate Change",
+    "scope": 2,
     "link": "https://www.change.org/p/florida-state-senate-put-a-price-cap-on-insulin-in-florida-b8927ca8-1927-4706-a85b-b392ca516206?source_location=topic_page",
     "picture": "images/climate_change.png",
     "tooltip": "Time is running out for our planet. And as the Amazon “the lungs of our planet” burn before our eyes, we must act now to fight climate change or doom this and future generations into an age of extinction."
   },
   {
+    "petition_id": 2,
     "for_id": 1,
     "against_id": 5,
     "donate_id": 9,
     "donate_amt_id": 13,
     "name": "Animal Cruelty",
+    "scope": 1,
     "link": "https://www.change.org/p/pass-the-preventing-animal-cruelty-pact-act?source_location=topic_page",
     "picture": "images/animal_cruelty.png",
     "tooltip": "Ask Congress to pass the Preventing Animal Cruelty and Torture (PACT) Act, the first-ever general federal Animal Cruelty law in history. This is a bill with broad bipartisan support. Even prior to swearing in the new members of Congress, this bill had 36 Co-Sponsors in the Senate and 283 Co-Sponsors in the House. It was previously blocked from a vote by a single congressman."
   },
   {
+    "petition_id": 3,
     "for_id": 2,
     "against_id": 6,
     "donate_id": 10,
     "donate_amt_id": 14,
     "name": "Bank Of America",
+    "scope": 1,
     "link": "https://www.change.org/p/bank-of-america-bank-of-america-let-thieves-empty-my-account-of-20000-and-accepts-no-responsibility?source_location=topic_page",
     "picture": "images/bank_of_america.png",
     "tooltip": "Its been two months since all of my savings were stolen through ATM's, check cashing places and even from bank tellers in under 24 hours. I was not alerted on any of the 10 withdrawals despite them all being over $1000 and out of state."
   },
   {
+    "petition_id": 4,
     "for_id": 3,
     "against_id": 7,
     "donate_id": 11,
     "donate_amt_id": 15,
     "name": "Insulin Florida",
+    "scope": 0,
     "link": "https://www.change.org/p/go-allinforclimateaction-now?pt=AVBldGl0aW9uAMT%2FCQEAAAAAXciAZUHt%2FEVmOGJiNTllZQ%3D%3D&source_location=topic_page",
     "picture": "images/insulin_florida.png",
     "tooltip": "I am a Type 1 diabetic and I have been since 1994. Just a couple of years ago the cost for a 3-month supply of Novolog insulin, which I have to inject every time I eat, was $100. Now, a 1-month supply costs $458.77 and there is no discount for a 3-month supply, meaning I would have to pay almost $1,500 for a 3-month supply -- about $6,000 a year for just one type of insulin."

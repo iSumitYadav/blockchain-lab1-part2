@@ -1,5 +1,5 @@
-var Ballot = artifacts.require("Change_Org");
+var change_org = artifacts.require("Change_Org");
 
 module.exports = function (deployer) {
-	deployer.deploy(Ballot, 1);
+	deployer.deploy(change_org, 5);
 };

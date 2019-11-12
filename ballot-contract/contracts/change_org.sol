@@ -74,7 +74,7 @@ contract Change_Org {
         petitions.length = maxNumPetitions;
     }
 
-    function changeState(Phase x) onlyChair public {
+    function changeState(Phase x) public onlyChair {
         require (x > state, 'changeState');
         state = x;
     }
@@ -109,8 +109,8 @@ contract Change_Org {
         require(petitions[petitionNumber].petitionVotes[msg.sender].voted == false, '109'); // meaning the voter shouldn't have voted for the same proposal before 
         require (voterList[msg.sender].voteCount > 0, '110');
         require (petitionNumber < petitions.length, 'require');
-        //require(voterList[msg.sender].voterScope >= petitions[petitionNumber].petitionScope);
-        
+        require(voterList[msg.sender].voterScope >= petitions[petitionNumber].petitionScope);
+
         voterList[msg.sender].voteCount = voterList[msg.sender].voteCount - 1;
         if(voteType_ == voteType.For) {
             petitions[petitionNumber].forCount += voterList[msg.sender].weight;
@@ -127,16 +127,13 @@ contract Change_Org {
     }
   
     // Function to get the final status of a particular petition after the voting phase is done.
-    function reqPetitionStatus() public view returns (uint256 forCount, uint256 againstCount, uint256 abcd) {
-        forCount = 1;
-        againstCount = 2;
-        abcd = 3;
-        //forCount = petitions[petitionNumber].forCount;
-        //againstCount = petitions[petitionNumber].againstCount;
-        //if(forCount > againstCount)
-        //    assert(forCount - againstCount > 1); // case where we have a tie
-        //else
-        //   assert(againstCount - forCount > 1); // case where we have a tie
+    function reqPetitionStatus(uint petitionNumber) public view returns (uint256 forCount, uint256 againstCount) {
+        forCount = petitions[petitionNumber].forCount;
+        againstCount = petitions[petitionNumber].againstCount;
+        if(forCount > againstCount)
+            assert(forCount - againstCount > 1); // case where we have a tie
+        else
+           assert(againstCount - forCount > 1); // case where we have a tie
     }
     
     // Function to get the total donation amount for a particular petition after the donation phase is done.

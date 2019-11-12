@@ -19,9 +19,13 @@ App = {
         proposalTemplate.find('.btn-vote-against').attr('data-id', data[i].against_id);
         proposalTemplate.find('.btn-donate').attr('data-id', data[i].donate_id);
         proposalTemplate.find('.donate-amt').attr('data-id', data[i].donate_amt_id);
+        proposalTemplate.find('.register-petition').attr('petitionNumber', data[i].petition_id);
+        proposalTemplate.find('.register-petition').attr('petitionScope', data[i].scope);
 
         proposalsRow.append(proposalTemplate.html());
         App.names.push(data[i].name);
+
+        // App.handleRaisePetition(data[i].petition_id, data[i].scope);
       }
     });
     return App.initWeb3();
@@ -55,7 +59,19 @@ App = {
     App.getChairperson();
     return App.bindEvents();
   });
+    // return App.initPetition();
   },
+
+  // initPetition: function(){
+  //   $.getJSON('../proposals.json', function(data) {
+
+  //     for (i = 0; i < data.length; i ++) {
+  //       App.handleRaisePetition(data[i].petition_id, data[i].scope);
+  //     }
+
+  //   });
+  //   return App.bindEvents();
+  // },
 
   bindEvents: function() {
     $(document).on('click', '.btn-vote-for', App.handleVote);
@@ -64,6 +80,7 @@ App = {
     $(document).on('click', '#win-count', App.handleWinner);
     $(document).on('click', '#register', function(){ var ad = $('#enter_address').val(); App.handleRegister(ad); });
     $(document).on('click', '#change_state_btn', function(){ var newState = $('#enter_state_opt').val(); App.handleChangeState(newState);});
+    $(document).on('click', '.register-petition', App.handleRaisePetition);
   },
 
   populateAddress : function(){
@@ -83,6 +100,8 @@ App = {
     }).then(function(result) {
       App.chairPerson = result.constructor.currentProvider.selectedAddress.toString();
       App.currentAccount = web3.eth.coinbase;
+      // alert(App.chairPerson);
+      // alert(App.currentAccount);
       if(App.chairPerson != App.currentAccount){
         jQuery('#address_div').css('display','none');
         jQuery('#register_div').css('display','none');
@@ -90,7 +109,14 @@ App = {
         jQuery('#address_div').css('display','block');
         jQuery('#register_div').css('display','block');
       }
-    })
+    });
+    // $.getJSON('../proposals.json', function(data) {
+
+    //   for (i = 0; i < data.length; i ++) {
+    //     App.handleRaisePetition(data[i].petition_id, data[i].scope);
+    //   }
+
+    // });
   },
 
   handleRegister: function(addr){
@@ -98,8 +124,19 @@ App = {
     var voteInstance;
     App.contracts.vote.deployed().then(function(instance) {
       voteInstance = instance;
+      // if (addr != App.chairPerson){
+      //   alert("Who this No Chairperson telling me what to do!");
+      //   // return;
+      // }
+      var expert = $('#is_expert').val();
+      var age = $('#age_id').val();
+      var voter_scope = $('#voter_scope_val').val();
+      // alert(expert);
+      // alert(age);
+      // alert(voter_scope);
       // return voteInstance.register(addr);
-      return voteInstance.registerVoter(addr, 0, 30, 0);
+      // return voteInstance.registerVoter(addr, 0, 30, 0);
+      return voteInstance.registerVoter(addr, expert, age, voter_scope);
     }).then(function(result, err){
         if(result){
             if(parseInt(result.receipt.status) == 1)
@@ -117,6 +154,11 @@ App = {
     var voteInstance;
     App.contracts.vote.deployed().then(function(instance) {
       voteInstance = instance;
+      var addr = $('#enter_address').val();
+      // if (addr != App.chairPerson){
+      //   alert("Who this No Chairperson telling me what to do!");
+      //   // return;
+      // }
       return voteInstance.changeState(newState);
     }).then(function(result, err){
         if(result){
@@ -145,14 +187,14 @@ App = {
     var voteInstance;
 
     web3.eth.getAccounts(function(error, accounts) {
-      // var account = accounts[0];
-      var account = addr;
+      var account = accounts[0];
+      // var account = addr;
       // alert(account + " voting failed")
       App.contracts.vote.deployed().then(function(instance) {
         voteInstance = instance;
 
-        // return voteInstance.vote(proposalId, {from: account});
-        return voteInstance.vote(proposalId, 0);
+        return voteInstance.vote(proposalId, 0, {from: account});
+        // return voteInstance.vote(proposalId, 0);
         // return voteInstance.changeState(4);
         // return voteInstance.registerVoter(account, 0, 30, 0);
       }).then(function(result, err){
@@ -178,14 +220,14 @@ App = {
     var voteInstance;
     proposalId = proposalId % 4;
     web3.eth.getAccounts(function(error, accounts) {
-      // var account = accounts[0];
-      var account = addr;
+      var account = accounts[0];
+      // var account = addr;
       // alert(account + " voting failed")
       App.contracts.vote.deployed().then(function(instance) {
         voteInstance = instance;
 
         // return voteInstance.vote(proposalId, {from: account});
-        return voteInstance.vote(proposalId, 1);
+        return voteInstance.vote(proposalId, 1, {from: account});
         // return voteInstance.changeState(4);
         // return voteInstance.registerVoter(account, 0, 30, 0);
       }).then(function(result, err){
@@ -213,13 +255,13 @@ App = {
     var voteInstance;
     proposalId = proposalId % 4;
     web3.eth.getAccounts(function(error, accounts) {
-
-      var account = addr;
+      var account = accounts[0];
+      // var account = addr;
       App.contracts.vote.deployed().then(function(instance) {
         voteInstance = instance;
 
         // return voteInstance.vote(proposalId, {from: account});
-        return voteInstance.donate(proposalId, amount);
+        return voteInstance.donate(proposalId, amount, {from: account});
         // return voteInstance.changeState(4);
         // return voteInstance.registerVoter(account, 0, 30, 0);
       }).then(function(result, err){
@@ -231,6 +273,43 @@ App = {
                 alert(account + " donation unsuccessfull due to revert")
             } else {
                 alert(account + " donation failed")
+            }
+        });
+    });
+  },
+
+  handleRaisePetition: function(event) {
+    event.preventDefault();
+    // var addr = $('#enter_address').val();
+    // alert(addr);
+    var petitionNumber = parseInt($(event.target).attr('petitionNumber'));
+    var petitionScope = parseInt($(event.target).attr('petitionScope'));
+    // alert(proposalId);
+    // var amount = $(".donate-amt[data-id=" + (proposalId+4) +"]").val();
+    // console.log(amount);
+    var voteInstance;
+    // alert(petitionNumber);
+    // alert(petitionScope);
+    // alert(petitionNumber);
+    // alert(petitionScope);
+    // proposalId = proposalId % 4;
+    web3.eth.getAccounts(function(error, accounts) {
+      var account = accounts[0];
+      // var account = addr;
+      App.contracts.vote.deployed().then(function(instance) {
+        voteInstance = instance;
+
+        return voteInstance.raisePetition(petitionNumber, petitionScope, {from: account});
+
+      }).then(function(result, err){
+            if(result){
+                console.log(result.receipt.status);
+                if(parseInt(result.receipt.status) == 1)
+                alert(account + " donation successfull");
+                else
+                alert(account + " donation unsuccessfull due to revert");
+            } else {
+                alert(account + " donation failed");
             }
         });
     });
