@@ -21,6 +21,9 @@ App = {
         proposalTemplate.find('.donate-amt').attr('data-id', data[i].donate_amt_id);
         proposalTemplate.find('.register-petition').attr('petitionNumber', data[i].petition_id);
         proposalTemplate.find('.register-petition').attr('petitionScope', data[i].scope);
+        proposalTemplate.find('.petition-status').attr('petitionNumber', data[i].petition_id);
+        proposalTemplate.find('.petition-status').attr('petitionScope', data[i].scope);
+
 
         proposalsRow.append(proposalTemplate.html());
         App.names.push(data[i].name);
@@ -81,6 +84,7 @@ App = {
     $(document).on('click', '#register', function(){ var ad = $('#enter_address').val(); App.handleRegister(ad); });
     $(document).on('click', '#change_state_btn', function(){ var newState = $('#enter_state_opt').val(); App.handleChangeState(newState);});
     $(document).on('click', '.register-petition', App.handleRaisePetition);
+    $(document).on('click', '.petition-status', App.handlePetitionStatus);
   },
 
   populateAddress : function(){
@@ -315,12 +319,33 @@ App = {
     });
   },
 
+  handlePetitionStatus : function(event) {
+    // alert();
+    event.preventDefault();
+
+    var petitionNumber = parseInt($(event.target).attr('petitionNumber'));
+    // var petitionScope = parseInt($(event.target).attr('petitionScope'));
+    alert("To get petition status of: " + petitionNumber);
+    var voteInstance;
+    App.contracts.vote.deployed().then(function(instance) {
+      voteInstance = instance;
+      return voteInstance.reqPetitionStatus(petitionNumber);
+    }).then(function(res){
+    console.log(res);
+    alert("forCount: " + res[0].c[0]);
+    alert("againstCount: " + res[1].c[0]);
+      // alert(App.names[res] + "  is the winner ! :)");
+    }).catch(function(err){
+      console.log(err);
+    })
+  },
+
   handleWinner : function() {
     console.log("To get winner");
     var voteInstance;
     App.contracts.vote.deployed().then(function(instance) {
       voteInstance = instance;
-      return voteInstance.reqPetitionStatus();
+      // return voteInstance.reqPetitionStatus();
     }).then(function(res){
     console.log(res);
     console.log(res[2].c[0]);

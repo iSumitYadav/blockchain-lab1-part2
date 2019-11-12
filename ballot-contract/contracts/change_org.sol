@@ -119,23 +119,23 @@ contract Change_Org {
         }
         petitions[petitionNumber].petitionVotes[msg.sender].voted = true;
     }
- 
+
     // Function to donate for a particular petition, after voting   
     function donate(uint petitionNumber, uint amount) public validPhase(Phase.Donate) registeredVoter() {
         assert(amount > 0 && amount % 10 == 0); // donation amount should be greater than 0 and in multiple of $10 
         petitions[petitionNumber].donation += amount;  
     }
-  
+
     // Function to get the final status of a particular petition after the voting phase is done.
-    function reqPetitionStatus(uint petitionNumber) public view returns (uint256 forCount, uint256 againstCount) {
+    function reqPetitionStatus(uint petitionNumber) public validPhase(Phase.Done) view returns (uint256 forCount, uint256 againstCount) {
         forCount = petitions[petitionNumber].forCount;
         againstCount = petitions[petitionNumber].againstCount;
-        if(forCount > againstCount)
-            assert(forCount - againstCount > 1); // case where we have a tie
-        else
-           assert(againstCount - forCount > 1); // case where we have a tie
+        // if(forCount > againstCount)
+        //    assert(forCount - againstCount > 1); // case where we have a tie
+        // else
+        //   assert(againstCount - forCount > 1); // case where we have a tie
     }
-    
+
     // Function to get the total donation amount for a particular petition after the donation phase is done.
     function reqDonationAmount(uint petitionNumber) public validPhase(Phase.Done) view returns (uint256 usd) {
         usd = petitions[petitionNumber].donation;
