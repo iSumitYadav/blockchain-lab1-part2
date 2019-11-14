@@ -140,4 +140,8 @@ contract Change_Org {
     function reqDonationAmount(uint petitionNumber) public validPhase(Phase.Done) view returns (uint256 usd) {
         usd = petitions[petitionNumber].donation;
     }
+
+    function getCurrentState() public view returns (Phase currentState){
+        currentState = state;
+    }
 }

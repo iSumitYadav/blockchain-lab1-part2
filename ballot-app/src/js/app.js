@@ -5,6 +5,13 @@ App = {
   url: 'http://127.0.0.1:7545',
   chairPerson:null,
   currentAccount:null,
+  statesName: {
+    0: "Init",
+    1: "Register",
+    2: "Vote",
+    3: "Donate",
+    4: "Done"
+  },
   init: function() {
     $.getJSON('../proposals.json', function(data) {
       var proposalsRow = $('#proposalsRow');
@@ -85,6 +92,7 @@ App = {
     $(document).on('click', '#change_state_btn', function(){ var newState = $('#enter_state_opt').val(); App.handleChangeState(newState);});
     $(document).on('click', '.register-petition', App.handleRaisePetition);
     $(document).on('click', '.petition-status', App.handlePetitionStatus);
+    $(document).on('click', '#current_state_btn', App.handleCurrentState);
   },
 
   populateAddress : function(){
@@ -154,7 +162,7 @@ App = {
 },
 
   handleChangeState: function(newState){
-    alert(newState);
+    alert("Changing state to " + App.statesName[newState]);
     var voteInstance;
     App.contracts.vote.deployed().then(function(instance) {
       voteInstance = instance;
@@ -167,8 +175,8 @@ App = {
     }).then(function(result, err){
         if(result){
             // if(parseInt(result.receipt.status) == 1)
-            alert("state changed")
-            console.log("state change successfull")
+            alert("state changed successfully to " + App.statesName[newState])
+            // console.log("state change successfull")
             // if(newState == 2){
             //   $("#register").prop( "disabled", true);
             // }
@@ -176,11 +184,36 @@ App = {
             // alert(addr + " registration not done successfully due to revert")
         } else {
             // alert(newState + " registration failed")
-            alert("state change unsuccessfull")
+            alert("state change to " + App.statesName[newState] + " unsuccessful")
             // alert(err + " registration failed")
         }   
     });
 },
+
+  handleCurrentState: function(event){
+    event.preventDefault();
+    var voteInstance;
+
+    web3.eth.getAccounts(function(error, accounts) {
+      var account = accounts[0];
+      // var account = addr;
+      // alert(account + " voting failed")
+      App.contracts.vote.deployed().then(function(instance) {
+        voteInstance = instance;
+
+        return voteInstance.getCurrentState();
+        // return voteInstance.vote(proposalId, 0);
+        // return voteInstance.changeState(4);
+        // return voteInstance.registerVoter(account, 0, 30, 0);
+      }).then(function(result, err){
+            if(result){
+              alert("Current Phase: " + App.statesName[result]);
+            } else {
+              alert("Status fetching failed")
+            }
+        });
+    });
+  },
 
   handleVote: function(event) {
     event.preventDefault();
