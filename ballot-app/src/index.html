@@ -36,9 +36,9 @@
       <div class="col-lg-6">
         <div class="panel panel-default panel-proposal">
           <div class="panel-heading">
-            <a class="panel-link" target="_blank" href=""><u><h3 class="panel-title" style="text-align:center; margin-top: 5px"></h3></u></a>
+            <a class="panel-link" target="_blank" href=""><u><h1 class="panel-title" style="text-align:center; margin-top: 5px; font-size: 20px;"></h1></u></a>
             <button class="btn btn-info register-petition" type="button" petitionNumber="" petitionScope=""  margin-top: 5px>Register</button>
-            <button class="btn btn-success btn-req-donation-amt" type="button" petitionNumber="" petitionScope="" style="margin-left: 75px; margin-top: 5px">Request Donation Amount</button>
+            <button class="btn btn-success btn-req-donation-amt" type="button" petitionNumber="" petitionScope="" style="margin-left: 83px; margin-top: 5px">Request Donation Amount</button>
             <button class="btn btn-info petition-status" type="button" petitionNumber="" petitionScope="" style="float: right; margin-top: 5px">Petition Status</button>
           </div>
           <div class="panel-body">
@@ -50,6 +50,9 @@
               <!-- <span> Donate: <input type="number" name="donate" placeholder="$$$"></span> -->
               <input type="number" class="donate-amt" data-id="" name="donate" placeholder="$$$" style="float:right; margin-top: 4px; margin-right: -190px; border-radius: 8px;">
               <button class="btn btn-info btn-donate" type="button" data-id="" style="float:right; margin-right: -277px;">Donate</button>
+              <br>
+              <span class="forCountSpan" style="margin-left: -55px;"></span>
+              <span class="againstCountSpan" style="margin-left: 8px;"></span>
               <!-- <div>
                 <input type="number" class="donate-amt" data-id="" name="donate" placeholder="$$$" style="margin-top: 5px;">
                 <button class="btn btn-info btn-donate" type="button" data-id="" style="margin-top: 5px;">Donate</button>
@@ -104,13 +107,15 @@
           </select>
         </div>
       </div>
- -->      <button class="btn btn-success" type="button" id="win-count" style="float:right; margin-right: 5px; margin-top: 20px;">Declare Winner</button>
-        <br>
+ -->
+      <!-- <button class="btn btn-success" type="button" id="win-count" style="float:right; margin-right: 5px; margin-top: 20px;">Declare Winner</button> -->
+      <button class="btn btn-success" type="button" id="current_state_btn" style="float:right; margin-right: 5px; margin-top: 20px;">Current State</button> 
+      <br>
       <div class="row" id="register_div">
         <div style="margin-left: 15px;">
           <button class="btn btn-info" type="button" id="register">Register</button>
           <button class="btn btn-info" type="button" id="change_state_btn" style="margin-left: 433px;">Change State</button>
-          <button class="btn btn-info" type="button" id="current_state_btn" style="margin-left: 68px;">Current State</button>
+          <!-- <button class="btn btn-info" type="button" id="current_state_btn" style="margin-left: 68px;">Current State</button> -->
         </div>
       </div>
       <!-- <div class="row" id="change_state_div">
