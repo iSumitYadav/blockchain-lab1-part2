@@ -1,6 +1,7 @@
 App = {
   web3Provider: null,
   contracts: {},
+  voterScope: {},
   names: new Array(),
   url: 'http://127.0.0.1:7545',
   chairPerson:null,
@@ -17,6 +18,7 @@ App = {
     1: "National",
     2: "International"
   },
+  currentPhase: 0,
   init: function() {
     $.getJSON('../proposals.json', function(data) {
       var proposalsRow = $('#proposalsRow');
@@ -28,7 +30,9 @@ App = {
         proposalTemplate.find('img').attr('src', data[i].picture);
         proposalTemplate.find('img').attr('title', data[i].tooltip);
         proposalTemplate.find('.btn-vote-for').attr('data-id', data[i].for_id);
+        proposalTemplate.find('.btn-vote-for').attr('petitionScope', data[i].scope);
         proposalTemplate.find('.btn-vote-against').attr('data-id', data[i].against_id);
+        proposalTemplate.find('.btn-vote-against').attr('petitionScope', data[i].scope);
         proposalTemplate.find('.btn-donate').attr('data-id', data[i].donate_id);
         proposalTemplate.find('.donate-amt').attr('data-id', data[i].donate_amt_id);
         proposalTemplate.find('.register-petition').attr('petitionNumber', data[i].petition_id);
@@ -132,6 +136,9 @@ App = {
       return voteInstance.registerVoter(addr, expert, age, voter_scope);
     }).then(function(result){
       if(result){
+        var voter_scope = $('#voterScopeVal').val();
+        App.voterScope[addr] = parseInt(voter_scope);
+        // console.log(App.voterScope);
         alert("Registration done successfully for " + addr);
       }
     }).catch(function(err){
@@ -149,6 +156,7 @@ App = {
       return voteInstance.changeState(newState);
     }).then(function(result){
       if(result){
+        App.currentPhase = newState;
         alert("Phase changed successfully to " + App.statesName[newState]);
       } 
     }).catch(function(err){
@@ -170,6 +178,7 @@ App = {
         return voteInstance.getCurrentState();
       }).then(function(result){
         if(result){
+          App.currentPhase = result;
           alert("Current Phase: " + App.statesName[result]);
         }
       }).catch(function(err){
@@ -183,10 +192,18 @@ App = {
     event.preventDefault();
 
     var proposalId = parseInt($(event.target).data('id'));
+    var petitionScope = parseInt($(event.target).attr('petitionScope'));
     var voteInstance;
 
     web3.eth.getAccounts(function(error, accounts) {
       var account = accounts[0];
+      // console.log(petitionScope);
+      // console.log(App.voterScope[account]);
+
+      if(App.voterScope[account] < petitionScope){
+        alert(account + " voting unsuccessful due to revert");
+        return;
+      }
 
       App.contracts.vote.deployed().then(function(instance) {
         voteInstance = instance;
@@ -207,11 +224,15 @@ App = {
     event.preventDefault();
 
     var proposalId = parseInt($(event.target).data('id'));
+    var petitionScope = parseInt($(event.target).attr('petitionScope'));
     var voteInstance;
     proposalId = proposalId % 4;
 
     web3.eth.getAccounts(function(error, accounts) {
       var account = accounts[0];
+      // alert(account.scope);
+      // alert(petitionScope);
+      // alert(proposalId);
       App.contracts.vote.deployed().then(function(instance) {
         voteInstance = instance;
 
@@ -221,7 +242,7 @@ App = {
           alert(account + " vote against done successfully");
         }
       }).catch(function(err){
-        alert(account + " vote against unsuccessfull due to revert");
+        alert(account + " vote against unsuccessful due to revert");
         // alert("Something Went Wrong. See Ganache logs. " + err['code']);
       });
     });
@@ -247,7 +268,13 @@ App = {
           alert(account + " donation successful");
         }
       }).catch(function(err){
-        alert(account + " donation unsuccessfull due to revert");
+        if(App.currentPhase < 3){
+          alert("Invalid Phase for this action");
+        }else if(App.voterScope[account] === undefined){
+          alert("Not a Registered Voter");
+        }else{
+          alert(account + " donation unsuccessful due to revert");
+        }
         // alert("Something Went Wrong. See Ganache logs. " + err['code']);
       });
     });
@@ -296,8 +323,11 @@ App = {
       $("#forCountSpan"+petitionNumber).text("For Count: " + res[0].c[0]);
       $("#againstCountSpan"+petitionNumber).text("Against Count: " + res[1].c[0]);
     }).catch(function(err){
-      alert("Invalid Phase for this action");
-      // alert("Something Went Wrong. See Ganache logs. " + err['code']);
+      if(App.currentPhase < 4){
+        alert("Invalid Phase for this action");
+      }else{
+        alert("Something Went Wrong. See Ganache logs. " + err['code']);
+      }
     });
   },
 
