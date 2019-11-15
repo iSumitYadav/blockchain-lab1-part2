@@ -368,8 +368,8 @@ App = {
       return voteInstance.reqPetitionStatus(petitionNumber);
     }).then(function(res){
     console.log(res);
-    alert("Petition: " + petitionNumber + " forCount: " + res[0].c[0]);
-    alert("Petition: " + petitionNumber + " againstCount: " + res[1].c[0]);
+    alert("Petition: " + petitionNumber + " forCount: " + res[0].c[0] + " " + " againstCount: " + res[1].c[0]);
+    // alert("Petition: " + petitionNumber + " againstCount: " + res[1].c[0]);
       // alert(App.names[res] + "  is the winner ! :)");
     }).catch(function(err){
       console.log(err);
