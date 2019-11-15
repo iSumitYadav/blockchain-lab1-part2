@@ -152,7 +152,7 @@ App = {
     }).then(function(result, err){
         if(result){
             if(parseInt(result.receipt.status) == 1)
-            alert( + "Registration done successfully for " + addr)
+            alert("Registration done successfully for " + addr)
             else
             alert("Registration of " + addr + " not done successfully due to revert")
         } else {

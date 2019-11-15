@@ -34,32 +34,32 @@ contract Change_Org {
     Phase public state = Phase.Init;
 
     modifier validPhase(Phase reqPhase) { 
-        require(state == reqPhase, 'validPhase');
+        require(state == reqPhase, 'Invalid Phase for this action');
         _;    
     }
 
     modifier onlyChair() {
-        require(msg.sender == chairperson, 'onlyChair');
+        require(msg.sender == chairperson, 'Only Chairperson is allowed to perform this action');
         _;
     }
     
     modifier validAge() {
-        require(voterList[msg.sender].age > 18, 'validAge');
+        require(voterList[msg.sender].age > 18, 'Invalid Age');
         _;
     }
     
     modifier validScope(uint petitionNumber) {
-        require(voterList[msg.sender].voterScope >= petitions[petitionNumber].petitionScope, 'validScope');
+        require(voterList[msg.sender].voterScope >= petitions[petitionNumber].petitionScope, 'Invalid Voter Scope');
         _;
     }
     
     modifier validPetitionCount() {
-        require(voterList[msg.sender].petitionCount > 0, 'validPetitionCount');
+        require(voterList[msg.sender].petitionCount > 0, 'Invalid Petition Count');
         _;
     }
     
     modifier registeredVoter() {
-        require(voterList[msg.sender].registered == true, 'registeredVoter');
+        require(voterList[msg.sender].registered == true, 'Not a Registered Voter');
         _;
     }
     
@@ -75,14 +75,14 @@ contract Change_Org {
     }
 
     function changeState(Phase x) public onlyChair {
-        require (x > state, 'changeState');
+        require (x > state, 'Invalid Phase Change');
         state = x;
     }
     
     //The chairperson or any registered voter with a valid petition count can raise a petition in a Registration phase
     function raisePetition(uint petitionNumber, scope petitionScope) public validPhase(Phase.Regs) registeredVoter() validPetitionCount()  {
-        require(petitionNumber > 0, 'petitionNumber > 0'); // valid petition number
-        require(petitionScope <= scope.International, 'petitionScope <= scope.International'); // valid petition type
+        require(petitionNumber > 0, 'Invalid Petition'); // valid petition number
+        require(petitionScope <= scope.International, 'Invalid Petition Scope'); // valid petition type
         
         voterList[msg.sender].petitionCount = voterList[msg.sender].petitionCount - 1;
         petitions[petitionNumber].petitionScope = petitionScope;
@@ -105,11 +105,11 @@ contract Change_Org {
     }
 
     // Function to vote for a particular petition 
-    function vote(uint petitionNumber, voteType voteType_) public validPhase(Phase.Vote) validScope(petitionNumber) validAge() {
-        require(petitions[petitionNumber].petitionVotes[msg.sender].voted == false, '109'); // meaning the voter shouldn't have voted for the same proposal before 
-        require (voterList[msg.sender].voteCount > 0, '110');
-        require (petitionNumber < petitions.length, 'require');
-        require(voterList[msg.sender].voterScope >= petitions[petitionNumber].petitionScope);
+    function vote(uint petitionNumber, voteType voteType_) public registeredVoter() validPhase(Phase.Vote) validScope(petitionNumber) validAge() {
+        require(petitions[petitionNumber].petitionVotes[msg.sender].voted == false, 'This Voter has already voted.'); // meaning the voter shouldn't have voted for the same proposal before 
+        require (voterList[msg.sender].voteCount > 0, 'Vote count Exceeded');
+        require (petitionNumber < petitions.length, 'Unknown Petition');
+        require(voterList[msg.sender].voterScope >= petitions[petitionNumber].petitionScope, "Invalid Voter Scope");
 
         voterList[msg.sender].voteCount = voterList[msg.sender].voteCount - 1;
         if(voteType_ == voteType.For) {
