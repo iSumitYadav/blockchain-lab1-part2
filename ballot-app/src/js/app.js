@@ -30,6 +30,8 @@ App = {
         proposalTemplate.find('.register-petition').attr('petitionScope', data[i].scope);
         proposalTemplate.find('.petition-status').attr('petitionNumber', data[i].petition_id);
         proposalTemplate.find('.petition-status').attr('petitionScope', data[i].scope);
+        proposalTemplate.find('.btn-req-donation-amt').attr('petitionNumber', data[i].petition_id);
+        proposalTemplate.find('.btn-req-donation-amt').attr('petitionScope', data[i].scope);
 
 
         proposalsRow.append(proposalTemplate.html());
@@ -93,6 +95,7 @@ App = {
     $(document).on('click', '.register-petition', App.handleRaisePetition);
     $(document).on('click', '.petition-status', App.handlePetitionStatus);
     $(document).on('click', '#current_state_btn', App.handleCurrentState);
+    $(document).on('click', '.btn-req-donation-amt', App.handleRequestDonationAmount);
   },
 
   populateAddress : function(){
@@ -358,7 +361,7 @@ App = {
 
     var petitionNumber = parseInt($(event.target).attr('petitionNumber'));
     // var petitionScope = parseInt($(event.target).attr('petitionScope'));
-    alert("To get petition status of: " + petitionNumber);
+    alert("Status of Petition: " + petitionNumber);
     var voteInstance;
     App.contracts.vote.deployed().then(function(instance) {
       voteInstance = instance;
@@ -367,6 +370,27 @@ App = {
     console.log(res);
     alert("Petition: " + petitionNumber + " forCount: " + res[0].c[0]);
     alert("Petition: " + petitionNumber + " againstCount: " + res[1].c[0]);
+      // alert(App.names[res] + "  is the winner ! :)");
+    }).catch(function(err){
+      console.log(err);
+    })
+  },
+
+  handleRequestDonationAmount : function(event) {
+    // alert();
+    event.preventDefault();
+
+    var petitionNumber = parseInt($(event.target).attr('petitionNumber'));
+    // var petitionScope = parseInt($(event.target).attr('petitionScope'));
+    // console.log(petitionNumber);
+    alert("Fetching Donation Amount of Petition: " + petitionNumber);
+    var voteInstance;
+    App.contracts.vote.deployed().then(function(instance) {
+      voteInstance = instance;
+      return voteInstance.reqDonationAmount(petitionNumber);
+    }).then(function(res){
+    console.log(res);
+    alert("Donation Amount of Petition: " + petitionNumber + " is " + res[0].c[0]);
       // alert(App.names[res] + "  is the winner ! :)");
     }).catch(function(err){
       console.log(err);

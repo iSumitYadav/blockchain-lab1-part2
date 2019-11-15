@@ -130,10 +130,10 @@ contract Change_Org {
     function reqPetitionStatus(uint petitionNumber) public validPhase(Phase.Done) view returns (uint256 forCount, uint256 againstCount) {
         forCount = petitions[petitionNumber].forCount;
         againstCount = petitions[petitionNumber].againstCount;
-        // if(forCount > againstCount)
-        //    assert(forCount - againstCount > 1); // case where we have a tie
-        // else
-        //   assert(againstCount - forCount > 1); // case where we have a tie
+        if(forCount > againstCount)
+            assert(forCount - againstCount > 1); // case where we have a tie
+        else
+            assert(againstCount - forCount > 1); // case where we have a tie
     }
 
     // Function to get the total donation amount for a particular petition after the donation phase is done.
