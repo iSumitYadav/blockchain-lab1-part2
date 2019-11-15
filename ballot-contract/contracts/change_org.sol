@@ -3,7 +3,7 @@ pragma solidity ^0.5.2;
 contract Change_Org {
     enum voteType {For, Against}
     enum scope {Local, National, International}
-    
+
     struct Voter {
         uint weight;
         uint voteCount;
@@ -14,7 +14,7 @@ contract Change_Org {
         bool voted;
         bool registered;
     }
-    
+
     struct Petition {
         uint256 forCount;
         uint256 againstCount;
@@ -23,14 +23,14 @@ contract Change_Org {
         scope petitionScope;
         mapping(address => Voter) petitionVotes;
     }
-    
+
     Petition[] petitions;
-    
+
     address chairperson;
     mapping(address => Voter) voterList;
-    
+
     enum Phase{Init, Regs, Vote, Donate, Done}
-    
+
     Phase public state = Phase.Init;
 
     modifier validPhase(Phase reqPhase) { 
@@ -42,27 +42,27 @@ contract Change_Org {
         require(msg.sender == chairperson, 'Only Chairperson is allowed to perform this action');
         _;
     }
-    
+
     modifier validAge() {
         require(voterList[msg.sender].age > 18, 'Invalid Age');
         _;
     }
-    
+
     modifier validScope(uint petitionNumber) {
         require(voterList[msg.sender].voterScope >= petitions[petitionNumber].petitionScope, 'Invalid Voter Scope');
         _;
     }
-    
+
     modifier validPetitionCount() {
         require(voterList[msg.sender].petitionCount > 0, 'Invalid Petition Count');
         _;
     }
-    
+
     modifier registeredVoter() {
         require(voterList[msg.sender].registered == true, 'Not a Registered Voter');
         _;
     }
-    
+
     constructor (uint maxNumPetitions) public {
         chairperson = msg.sender;
         voterList[chairperson].weight = 2; //weight 2 for chairperson
@@ -78,7 +78,7 @@ contract Change_Org {
         require (x > state, 'Invalid Phase Change');
         state = x;
     }
-    
+
     //The chairperson or any registered voter with a valid petition count can raise a petition in a Registration phase
     function raisePetition(uint petitionNumber, scope petitionScope) public validPhase(Phase.Regs) registeredVoter() validPetitionCount()  {
         require(petitionNumber > 0, 'Invalid Petition'); // valid petition number
@@ -89,7 +89,7 @@ contract Change_Org {
 
         petitions[petitionNumber].forCount = petitions[petitionNumber].againstCount = petitions[petitionNumber].donation = 0;
     }
-    
+
     //Function to register a voter, Only chair can register a voter with his age, scope and expert flag
     function registerVoter(address voter, bool expert, uint age, scope voterScope) public validPhase(Phase.Regs) onlyChair {
         voterList[voter].registered = true;

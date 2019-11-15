@@ -47,16 +47,11 @@
             <div class="col-lg-6 text-center" style="display: inline-block;">
               <button class="btn btn-success btn-vote-for" style="margin-left: -57px" type="button" data-id="">Vote For</button>
               <button class="btn btn-danger btn-vote-against" style="margin-left: 15px" type="button" data-id="">Vote Against</button>
-              <!-- <span> Donate: <input type="number" name="donate" placeholder="$$$"></span> -->
               <input type="number" class="donate-amt" data-id="" name="donate" placeholder="$$$" style="float:right; margin-top: 4px; margin-right: -190px; border-radius: 8px;">
               <button class="btn btn-info btn-donate" type="button" data-id="" style="float:right; margin-right: -277px;">Donate</button>
               <br>
               <span class="forCountSpan" style="margin-left: -55px;"></span>
               <span class="againstCountSpan" style="margin-left: 8px;"></span>
-              <!-- <div>
-                <input type="number" class="donate-amt" data-id="" name="donate" placeholder="$$$" style="margin-top: 5px;">
-                <button class="btn btn-info btn-donate" type="button" data-id="" style="margin-top: 5px;">Donate</button>
-              </div> -->
             </div>
           </div>
         </div>
@@ -69,7 +64,7 @@
           <span> Address : </span>
           <select id="enter_address" value=""></select>
 
-          <span id="enter_state" style="margin-left: 98px;"> State : </span>
+          <span id="enter_state" style="margin-left: 98px;"> Phase : </span>
           <select id="enter_state_opt" value="">
             <option value="0" disabled="true">Init</option>
             <option value="1">Register</option>
@@ -96,33 +91,15 @@
           </select>
         </div>
       </div>
-      <!-- <div class="row" id="change_state_list_div">
-        <div style="margin-left: 150px;margin-top: 10px;">
-          <span> State : </span>
-          <select id="enter_state" value="">
-            <option value="1">Register</option>
-            <option value="2">Vote</option>
-            <option value="3">Donate</option>
-            <option value="4">Done</option>
-          </select>
-        </div>
-      </div>
- -->
-      <!-- <button class="btn btn-success" type="button" id="win-count" style="float:right; margin-right: 5px; margin-top: 20px;">Declare Winner</button> -->
-      <button class="btn btn-success" type="button" id="current_state_btn" style="float:right; margin-right: 5px; margin-top: 20px;">Current State</button> 
+
+      <button class="btn btn-success" type="button" id="current_state_btn" style="float:right; margin-right: 5px; margin-top: 20px;">Current Phase</button> 
       <br>
       <div class="row" id="register_div">
         <div style="margin-left: 15px;">
           <button class="btn btn-info" type="button" id="register">Register</button>
-          <button class="btn btn-info" type="button" id="change_state_btn" style="margin-left: 433px;">Change State</button>
-          <!-- <button class="btn btn-info" type="button" id="current_state_btn" style="margin-left: 68px;">Current State</button> -->
+          <button class="btn btn-info" type="button" id="change_state_btn" style="margin-left: 433px;">Change Phase</button>
         </div>
       </div>
-      <!-- <div class="row" id="change_state_div">
-        <div style="margin-left: 150px;">
-          <button class="btn btn-info" type="button" id="register">Change State</button>
-        </div>
-      </div> -->
       <br>
     </div>
     </div>
