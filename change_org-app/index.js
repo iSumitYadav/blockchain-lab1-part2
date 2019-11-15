@@ -1,7 +1,7 @@
 var express = require('express');
 var app = express();
 app.use(express.static('src'));
-app.use(express.static('../ballot-contract/build/contracts'));
+app.use(express.static('../change_org-contract/build/contracts'));
 app.get('/', function (req, res) {
   res.render('index.html');
 });
