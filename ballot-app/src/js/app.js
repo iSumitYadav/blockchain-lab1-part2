@@ -138,7 +138,7 @@ App = {
       if(result){
         var voter_scope = $('#voterScopeVal').val();
         App.voterScope[addr] = parseInt(voter_scope);
-        // console.log(App.voterScope);
+
         alert("Registration done successfully for " + addr);
       }
     }).catch(function(err){
@@ -197,8 +197,6 @@ App = {
 
     web3.eth.getAccounts(function(error, accounts) {
       var account = accounts[0];
-      // console.log(petitionScope);
-      // console.log(App.voterScope[account]);
 
       if(App.voterScope[account] < petitionScope){
         alert(account + " voting unsuccessful due to revert");
@@ -230,9 +228,7 @@ App = {
 
     web3.eth.getAccounts(function(error, accounts) {
       var account = accounts[0];
-      // alert(account.scope);
-      // alert(petitionScope);
-      // alert(proposalId);
+
       App.contracts.vote.deployed().then(function(instance) {
         voteInstance = instance;
 
