@@ -32,14 +32,14 @@ App = {
         proposalTemplate.find('.btn-donate').attr('data-id', data[i].donate_id);
         proposalTemplate.find('.donate-amt').attr('data-id', data[i].donate_amt_id);
         proposalTemplate.find('.register-petition').attr('petitionNumber', data[i].petition_id);
-        proposalTemplate.find('.register-petition').attr('id', "register-petition" + data[i].petition_id);
+        proposalTemplate.find('.register-petition').attr('id', "registerPetition" + data[i].petition_id);
         proposalTemplate.find('.register-petition').attr('petitionScope', data[i].scope);
         proposalTemplate.find('.petition-status').attr('petitionNumber', data[i].petition_id);
         proposalTemplate.find('.petition-status').attr('petitionScope', data[i].scope);
         proposalTemplate.find('.btn-req-donation-amt').attr('petitionNumber', data[i].petition_id);
         proposalTemplate.find('.btn-req-donation-amt').attr('petitionScope', data[i].scope);
-        proposalTemplate.find('.forCountSpan').attr('id', "forCountSpan" + data[i].petition_id);
-        proposalTemplate.find('.againstCountSpan').attr('id', "againstCountSpan" + data[i].petition_id);
+        proposalTemplate.find('.for-count-span').attr('id', "forCountSpan" + data[i].petition_id);
+        proposalTemplate.find('.against-count-span').attr('id', "againstCountSpan" + data[i].petition_id);
 
 
         proposalsRow.append(proposalTemplate.html());
@@ -83,11 +83,11 @@ App = {
     $(document).on('click', '.btn-vote-for', App.handleVote);
     $(document).on('click', '.btn-vote-against', App.handleVoteAgainst);
     $(document).on('click', '.btn-donate', App.handleDonate);
-    $(document).on('click', '#register', function(){ var ad = $('#enter_address').val(); App.handleRegister(ad); });
-    $(document).on('click', '#change_state_btn', function(){ var newState = $('#enter_state_opt').val(); App.handleChangeState(newState);});
+    $(document).on('click', '#register', function(){ var ad = $('#enterAddress').val(); App.handleRegister(ad); });
+    $(document).on('click', '#changeStateBtn', function(){ var newState = $('#enterStateOpt').val(); App.handleChangeState(newState);});
     $(document).on('click', '.register-petition', App.handleRaisePetition);
     $(document).on('click', '.petition-status', App.handlePetitionStatus);
-    $(document).on('click', '#current_state_btn', App.handleCurrentState);
+    $(document).on('click', '#currentStateBtn', App.handleCurrentState);
     $(document).on('click', '.btn-req-donation-amt', App.handleRequestDonationAmount);
   },
 
@@ -96,7 +96,7 @@ App = {
       jQuery.each(accounts,function(i){
         if(web3.eth.coinbase != accounts[i]){
           var optionElement = '<option value="'+accounts[i]+'">'+accounts[i]+'</option';
-          jQuery('#enter_address').append(optionElement);  
+          jQuery('#enterAddress').append(optionElement);  
         }
       });
     });
@@ -110,11 +110,11 @@ App = {
       App.currentAccount = web3.eth.coinbase;
 
       if(App.chairPerson != App.currentAccount){
-        jQuery('#address_div').css('display','none');
-        jQuery('#register_div').css('display','none');
+        jQuery('#addressDiv').css('display','none');
+        jQuery('#registerDiv').css('display','none');
       }else{
-        jQuery('#address_div').css('display','block');
-        jQuery('#register_div').css('display','block');
+        jQuery('#addressDiv').css('display','block');
+        jQuery('#registerDiv').css('display','block');
       }
     });
   },
@@ -125,9 +125,9 @@ App = {
     App.contracts.vote.deployed().then(function(instance) {
       voteInstance = instance;
 
-      var expert = $('#is_expert').val();
-      var age = $('#age_id').val();
-      var voter_scope = $('#voter_scope_val').val();
+      var expert = $('#isExpert').val();
+      var age = $('#ageId').val();
+      var voter_scope = $('#voterScopeVal').val();
 
       return voteInstance.registerVoter(addr, expert, age, voter_scope);
     }).then(function(result){
@@ -272,7 +272,7 @@ App = {
       }).then(function(result){
         if(result){
           alert(App.petitionScopeDict[petitionScope] + " Petition: " + petitionNumber + " raised successful");
-          $("#register-petition" + petitionNumber).attr("disabled","disabled");
+          $("#registerPetition" + petitionNumber).attr("disabled","disabled");
         }
       }).catch(function(err){
         alert(App.petitionScopeDict[petitionScope] + " Petition: " + petitionNumber + " unsuccessful due to revert");
