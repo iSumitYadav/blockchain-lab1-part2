@@ -390,7 +390,7 @@ App = {
       return voteInstance.reqDonationAmount(petitionNumber);
     }).then(function(res){
     console.log(res);
-    alert("Donation Amount of Petition: " + petitionNumber + " is " + res[0].c[0]);
+    alert("Donation Amount of Petition: " + petitionNumber + " is " + res.c[0]);
       // alert(App.names[res] + "  is the winner ! :)");
     }).catch(function(err){
       console.log(err);
