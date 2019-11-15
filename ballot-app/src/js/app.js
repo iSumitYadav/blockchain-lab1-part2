@@ -132,7 +132,7 @@ App = {
   },
 
   handleRegister: function(addr){
-    alert(addr);
+    alert("Registering " + addr);
     var voteInstance;
     App.contracts.vote.deployed().then(function(instance) {
       voteInstance = instance;
@@ -152,17 +152,17 @@ App = {
     }).then(function(result, err){
         if(result){
             if(parseInt(result.receipt.status) == 1)
-            alert(addr + " registration done successfully")
+            alert( + "Registration done successfully for " + addr)
             else
-            alert(addr + " registration not done successfully due to revert")
+            alert("Registration of " + addr + " not done successfully due to revert")
         } else {
-            alert(addr + " registration failed")
+            alert("Registration of " + addr + " failed")
         }
     });
 },
 
   handleChangeState: function(newState){
-    alert("Changing state to " + App.statesName[newState]);
+    alert("Changing Phase to " + App.statesName[newState]);
     var voteInstance;
     App.contracts.vote.deployed().then(function(instance) {
       voteInstance = instance;
@@ -175,7 +175,7 @@ App = {
     }).then(function(result, err){
         if(result){
             // if(parseInt(result.receipt.status) == 1)
-            alert("state changed successfully to " + App.statesName[newState])
+            alert("Phase changed successfully to " + App.statesName[newState])
             // console.log("state change successfull")
             // if(newState == 2){
             //   $("#register").prop( "disabled", true);
@@ -184,7 +184,7 @@ App = {
             // alert(addr + " registration not done successfully due to revert")
         } else {
             // alert(newState + " registration failed")
-            alert("state change to " + App.statesName[newState] + " unsuccessful")
+            alert("Phase change to " + App.statesName[newState] + " unsuccessful")
             // alert(err + " registration failed")
         }   
     });
@@ -209,7 +209,7 @@ App = {
             if(result){
               alert("Current Phase: " + App.statesName[result]);
             } else {
-              alert("Status fetching failed")
+              alert("Current Phase fetching failed!")
             }
         });
     });
@@ -238,7 +238,7 @@ App = {
             if(result){
                 console.log(result.receipt.status);
                 if(parseInt(result.receipt.status) == 1)
-                alert(account + " voting successfull")
+                alert(account + " voting successful")
                 else
                 alert(account + " voting unsuccessfull due to revert")
             } else {
@@ -305,7 +305,7 @@ App = {
             if(result){
                 console.log(result.receipt.status);
                 if(parseInt(result.receipt.status) == 1)
-                alert(account + " donation successfull")
+                alert(account + " donation successful")
                 else
                 alert(account + " donation unsuccessfull due to revert")
             } else {
@@ -342,11 +342,11 @@ App = {
             if(result){
                 console.log(result.receipt.status);
                 if(parseInt(result.receipt.status) == 1)
-                alert(account + " donation successfull");
+                alert(petitionScope + " Petition: " + petitionNumber + " raised successfull");
                 else
-                alert(account + " donation unsuccessfull due to revert");
+                alert(petitionScope + " Petition: " + petitionNumber + " unsuccessful due to revert");
             } else {
-                alert(account + " donation failed");
+                alert(petitionScope + " Petition: " + petitionNumber + " failed");
             }
         });
     });
@@ -365,8 +365,8 @@ App = {
       return voteInstance.reqPetitionStatus(petitionNumber);
     }).then(function(res){
     console.log(res);
-    alert("forCount: " + res[0].c[0]);
-    alert("againstCount: " + res[1].c[0]);
+    alert("Petition: " + petitionNumber + " forCount: " + res[0].c[0]);
+    alert("Petition: " + petitionNumber + " againstCount: " + res[1].c[0]);
       // alert(App.names[res] + "  is the winner ! :)");
     }).catch(function(err){
       console.log(err);
