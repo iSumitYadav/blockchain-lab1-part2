@@ -229,6 +229,11 @@ App = {
     web3.eth.getAccounts(function(error, accounts) {
       var account = accounts[0];
 
+      if(App.voterScope[account] < petitionScope){
+        alert(account + " voting unsuccessful due to revert");
+        return;
+      }
+
       App.contracts.vote.deployed().then(function(instance) {
         voteInstance = instance;
 
