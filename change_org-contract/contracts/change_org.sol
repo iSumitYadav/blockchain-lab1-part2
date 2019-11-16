@@ -81,7 +81,7 @@ contract Change_Org {
 
     //The chairperson or any registered voter with a valid petition count can raise a petition in a Registration phase
     function raisePetition(uint petitionNumber, scope petitionScope) public validPhase(Phase.Regs) registeredVoter() validPetitionCount()  {
-        require(petitionNumber > 0, 'Invalid Petition'); // valid petition number
+        require(petitionNumber >= 0, 'Invalid Petition'); // valid petition number
         require(petitionScope <= scope.International, 'Invalid Petition Scope'); // valid petition type
         
         voterList[msg.sender].petitionCount = voterList[msg.sender].petitionCount - 1;

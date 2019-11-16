@@ -1,0 +1,32 @@
+Workflow Instructions:
+
+First we check the current phase using the <Current Phase> button on the UI.
+Initially the current phase is Init.
+
+Now we select the chairperson account in metamask and select the phase as Register from the Phase drop down menu and press the change phase button.
+Now our phase is changed to the Register phase.
+
+In register phase we now can register a voter and the petitions.
+Petitions are displayed on the web page, the chairperson registers them using the register button on the UI.
+We first register all the petitions displayed on the UI (4 of them).
+Then we register voters by selecting their addresses from the drop down address list.
+We select the attributes of the voters <Expert, Age, Voter Scope> and click on the register button.
+
+To register the petition, we click on the register button on the petition.
+The chairperson or any registered voter can register a petition.
+
+Now, we select the Vote phase from the phase drop down list and click on change phase.
+Our phase is now changed to the Vote Phase.
+
+We now select the registered user account from MetaMask and click on Vote For or Vote Against for a registered petition.
+The vote is recorded and we can do the voting for multiple registered addresses.
+
+Now we select the chairperson address and change the Phase to the Donate Phase, using the phase drop down menu and the change state button. 
+
+Now the phase is changed to donate phase and we can now donate the amount in dollars using any address from Ropsten, it could be a registered voter or a non-registered person.
+
+We now move to the next phase which is phase Done using the chairperson's address and using the change phase button on the UI.
+Once our phase is Done, any address , registered or non-registered can query the petition status  using the PetitionStatus button on the particular petition.
+Once this button is clicked we can get the number of For and Against votes displayed on the UI.
+Similarly we can get the donation amount for a particular petition using any of the addresses(users).
+The donation amount will be displayed in the alert box.
