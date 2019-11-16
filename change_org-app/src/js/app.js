@@ -131,7 +131,7 @@ App = {
 
       var expert = $('#isExpert').val();
       var age = $('#ageId').val();
-      var voter_scope = $('#voterScopeVal').val();
+      var voter_scope = parseInt($('#voterScopeVal').val());
 
       return voteInstance.registerVoter(addr, expert, age, voter_scope);
     }).then(function(result){
@@ -198,11 +198,6 @@ App = {
     web3.eth.getAccounts(function(error, accounts) {
       var account = accounts[0];
 
-      if(App.voterScope[account] < petitionScope){
-        alert(account + " voting unsuccessful due to revert");
-        return;
-      }
-
       App.contracts.vote.deployed().then(function(instance) {
         voteInstance = instance;
 
@@ -228,11 +223,6 @@ App = {
 
     web3.eth.getAccounts(function(error, accounts) {
       var account = accounts[0];
-
-      if(App.voterScope[account] < petitionScope){
-        alert(account + " voting unsuccessful due to revert");
-        return;
-      }
 
       App.contracts.vote.deployed().then(function(instance) {
         voteInstance = instance;
