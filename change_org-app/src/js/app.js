@@ -130,7 +130,7 @@ App = {
     App.contracts.vote.deployed().then(function(instance) {
       voteInstance = instance;
 
-      var expert = $('#isExpert').val();
+      var expert = parseInt($('#isExpert').val());
       var age = $('#ageId').val();
       var voter_scope = parseInt($('#voterScopeVal').val());
 
