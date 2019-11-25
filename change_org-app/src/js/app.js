@@ -112,6 +112,7 @@ App = {
     }).then(function(result) {
       App.chairPerson = result.constructor.currentProvider.selectedAddress.toString();
       App.currentAccount = web3.eth.coinbase;
+      App.voterScope[App.chairPerson] = 2;
 
       if(App.chairPerson != App.currentAccount){
         jQuery('#addressDiv').css('display','none');
@@ -261,7 +262,7 @@ App = {
       }).catch(function(err){
         if(App.currentPhase < 3){
           alert("Invalid Phase for this action");
-        }else if(App.voterScope[account] === undefined){
+        }else if(App.voterScope[account] === undefined && account !== App.chairPerson){
           alert("Not a Registered Voter");
         }else{
           alert(account + " donation unsuccessful due to revert");
